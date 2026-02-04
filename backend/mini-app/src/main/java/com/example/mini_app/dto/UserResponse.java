@@ -1,13 +1,23 @@
 package com.example.mini_app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserResponse {
     
     private UserDTO user;
+
+    // Constructors
+    public UserResponse() {
+    }
+
+    public UserResponse(UserDTO user) {
+        this.user = user;
+    }
+
+    // Getters and Setters
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
 }

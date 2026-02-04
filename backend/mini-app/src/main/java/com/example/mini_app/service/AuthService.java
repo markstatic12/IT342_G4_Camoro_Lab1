@@ -28,8 +28,8 @@ public class AuthService {
         
         // Create new user
         User user = new User();
-        user.setFirstName(request.getFirst_name());
-        user.setLastName(request.getLast_name());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setStatus("active");

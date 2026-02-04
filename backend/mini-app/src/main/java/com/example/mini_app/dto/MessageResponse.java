@@ -1,13 +1,23 @@
 package com.example.mini_app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class MessageResponse {
     
     private String message;
+
+    // Constructors
+    public MessageResponse() {
+    }
+
+    public MessageResponse(String message) {
+        this.message = message;
+    }
+
+    // Getters and Setters
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

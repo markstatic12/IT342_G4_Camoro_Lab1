@@ -28,7 +28,7 @@ const AuthHighlights = () => {
             <p className="muted">Designed for clarity, confidence, and speed.</p>
           </div>
         </div>
-
+    
         <ul className="feature-list">
           {features.map((feature, idx) => (
             <li key={feature.title} className="feature-item" style={{ animationDelay: `${idx * 70}ms` }}>

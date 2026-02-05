@@ -1,15 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import AuthHighlights from '../components/AuthHighlights';
 import '../styles/Auth.css';
 
 const LoginForm = ({ data, onChange, onSubmit, loading, error }) => (
 	<>
 		<div className="panel-header">
-			<p className="eyebrow">Welcome back</p>
-			<h1>Access your workspace</h1>
-			
+			<p className="card-title">Welcome Back</p>
+			<p className="card-subtitle">Let's get started with your account.</p>
 		</div>
 		<form onSubmit={onSubmit} className="auth-form">
 			{error && <div className="alert error">{error}</div>}
@@ -51,9 +49,8 @@ const LoginForm = ({ data, onChange, onSubmit, loading, error }) => (
 const RegisterForm = ({ data, onChange, onSubmit, loading, error }) => (
 	<>
 		<div className="panel-header">
-			<p className="eyebrow">Create account</p>
-			<h1>Join the workspace</h1>
-			
+			<p className="card-title">Create Account</p>
+			<p className="card-subtitle">Join the waitlist for the design system.</p>
 		</div>
 		<form onSubmit={onSubmit} className="auth-form">
 			{error && <div className="alert error">{error}</div>}
@@ -140,7 +137,23 @@ const Auth = ({ initialMode = 'login' }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
+	const slides = [
+		{
+			title: 'Hey there! ',
+			text: 'Join my mini User Registration and Authentication App.',
+		},
+		{
+			title: 'Register, Log In, Access Dashboard',
+			text: 'All your account actions in one smooth, secure platform.',
+		},
+		{
+			title: 'Fast, Reliable, User-Friendly',
+			text: 'No complicated setup—just simple authentication made easy.',
+		},
+	];
+
 	const [mode, setMode] = useState(initialMode);
+	const [activeSlide, setActiveSlide] = useState(0);
 	const [loginData, setLoginData] = useState({ email: '', password: '' });
 	const [registerData, setRegisterData] = useState({
 		firstName: '',
@@ -160,6 +173,13 @@ const Auth = ({ initialMode = 'login' }) => {
 		}
 		setError('');
 	}, [location.pathname]);
+
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			setActiveSlide((prev) => (prev + 1) % slides.length);
+		}, 5000);
+		return () => clearInterval(intervalId);
+	}, [slides.length]);
 
 	const handleModeChange = (target) => {
 		setMode(target);
@@ -277,38 +297,63 @@ const Auth = ({ initialMode = 'login' }) => {
 	return (
 		<div className="auth-shell">
 			<div className="auth-surface">
-				<section className="auth-left" aria-live="polite">
-					<div className="toggle-row" role="tablist" aria-label="Authentication mode">
-						<button
-							type="button"
-							role="tab"
-							aria-selected={isLogin}
-							className={`toggle-button ${isLogin ? 'active' : ''}`}
-							onClick={() => handleModeChange('login')}
-						>
-							Login
-						</button>
-						<button
-							type="button"
-							role="tab"
-							aria-selected={!isLogin}
-							className={`toggle-button ${!isLogin ? 'active' : ''}`}
-							onClick={() => handleModeChange('register')}
-						>
-							Register
-						</button>
+				<section className="auth-marketing" aria-label="Intro">
+					<div className="brand-row">
+						<div className="brand-icon">MA</div>
+						<p className="brand-name">Mini - App</p>
 					</div>
 
-					<div className="form-stack" aria-live="polite">
-						{formPanels.login}
-						{formPanels.register}
+					<div className="marketing-carousel" aria-live="polite">
+						<div key={activeSlide} className="carousel-slide">
+							<h1 className="hero-title">{slides[activeSlide].title}</h1>
+							<p className="hero-subtitle">{slides[activeSlide].text}</p>
+						</div>
+						<div className="carousel-nav" role="tablist" aria-label="Carousel navigation">
+							{slides.map((_, index) => (
+								<button
+									key={`slide-${index}`}
+									type="button"
+									className={`carousel-dot ${index === activeSlide ? 'active' : ''}`}
+									aria-label={`Go to slide ${index + 1}`}
+									aria-selected={index === activeSlide}
+									role="tab"
+									onClick={() => setActiveSlide(index)}
+								/>
+							))}
+						</div>
 					</div>
 
-		
+
 				</section>
 
-				<section className="auth-right" aria-label="Highlights">
-					<AuthHighlights />
+				<section className="auth-card" aria-live="polite">
+					<div className="card-inner">
+						<div className="toggle-row" role="tablist" aria-label="Authentication mode">
+							<button
+								type="button"
+								role="tab"
+								aria-selected={isLogin}
+								className={`toggle-button ${isLogin ? 'active' : ''}`}
+								onClick={() => handleModeChange('login')}
+							>
+								Login
+							</button>
+							<button
+								type="button"
+								role="tab"
+								aria-selected={!isLogin}
+								className={`toggle-button ${!isLogin ? 'active' : ''}`}
+								onClick={() => handleModeChange('register')}
+							>
+								Register
+							</button>
+						</div>
+
+						<div className="form-stack" aria-live="polite">
+							{formPanels.login}
+							{formPanels.register}
+						</div>
+					</div>
 				</section>
 			</div>
 		</div>

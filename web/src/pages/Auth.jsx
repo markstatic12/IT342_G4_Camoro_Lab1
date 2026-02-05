@@ -9,7 +9,7 @@ const LoginForm = ({ data, onChange, onSubmit, loading, error }) => (
 		<div className="panel-header">
 			<p className="eyebrow">Welcome back</p>
 			<h1>Access your workspace</h1>
-			<p className="muted">Enter your credentials to continue to the dashboard.</p>
+			
 		</div>
 		<form onSubmit={onSubmit} className="auth-form">
 			{error && <div className="alert error">{error}</div>}
@@ -53,7 +53,7 @@ const RegisterForm = ({ data, onChange, onSubmit, loading, error }) => (
 		<div className="panel-header">
 			<p className="eyebrow">Create account</p>
 			<h1>Join the workspace</h1>
-			<p className="muted">Set up your profile to unlock your dashboard.</p>
+			
 		</div>
 		<form onSubmit={onSubmit} className="auth-form">
 			{error && <div className="alert error">{error}</div>}

@@ -4,22 +4,22 @@
   font-family: 'Sora', 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #e6f3ed;
-  background-color: #0a1511;
+  color: #e7edfa;
+  background-color: #070b16;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --surface-primary: #0e1a15;
-  --surface-elevated: #12231c;
-  --surface-muted: #163027;
-  --accent: #5cc19b;
-  --accent-strong: #4aa883;
-  --accent-soft: rgba(92, 193, 155, 0.14);
-  --text-main: #e6f3ed;
-  --text-secondary: #9cb7ab;
-  --stroke: rgba(230, 243, 237, 0.06);
-  --glow: 0 30px 80px rgba(6, 12, 10, 0.85);
+  --surface-primary: #0c1426;
+  --surface-elevated: #101a30;
+  --surface-muted: #13213a;
+  --accent: #6ea8ff;
+  --accent-strong: #4b8cf2;
+  --accent-soft: rgba(110, 168, 255, 0.16);
+  --text-main: #e7edfa;
+  --text-secondary: #9fb0cc;
+  --stroke: rgba(231, 237, 250, 0.07);
+  --glow: 0 30px 80px rgba(5, 9, 20, 0.85);
 }
 
 * {
@@ -36,9 +36,9 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at 18% 22%, rgba(92, 193, 155, 0.12), transparent 28%),
-    radial-gradient(circle at 78% 18%, rgba(54, 143, 110, 0.16), transparent 30%),
-    linear-gradient(155deg, #0a1511 0%, #0e1b15 45%, #0b1914 100%);
+  background: radial-gradient(circle at 18% 22%, rgba(110, 168, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 78% 18%, rgba(71, 119, 193, 0.16), transparent 30%),
+    linear-gradient(155deg, #070b16 0%, #0a1121 45%, #091126 100%);
   color: var(--text-main);
 }
 

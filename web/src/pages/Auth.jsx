@@ -50,7 +50,7 @@ const RegisterForm = ({ data, onChange, onSubmit, loading, error }) => (
 	<>
 		<div className="panel-header">
 			<p className="card-title">Create Account</p>
-			<p className="card-subtitle">Join the waitlist for the design system.</p>
+			<p className="card-subtitle">Discover and explore the system's authentication.</p>
 		</div>
 		<form onSubmit={onSubmit} className="auth-form">
 			{error && <div className="alert error">{error}</div>}

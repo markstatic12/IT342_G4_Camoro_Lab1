@@ -57,7 +57,7 @@ const Profile = () => {
       <main className="profile-content">
         <header className="content-header">
           <div>
-            <p className="content-eyebrow">Account</p>
+            <p className="content-crumb">Account / Profile</p>
             <h1>Profile</h1>
             <p className="content-subtitle">Manage your personal details and security.</p>
           </div>
@@ -69,7 +69,7 @@ const Profile = () => {
         </header>
 
         <section className="profile-grid">
-          <article className="profile-panel profile-summary">
+          <article className="profile-identity">
             <div className="profile-avatar">
               <div className="avatar-circle">
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
@@ -85,9 +85,8 @@ const Profile = () => {
             </div>
           </article>
 
-          <article className="profile-panel profile-details">
-            <h3>Profile Information</h3>
-            <div className="detail-grid">
+          <article className="profile-details-card">
+            <div className="detail-grid info-grid">
               <div className="detail-group">
                 <label>First Name</label>
                 <div className="detail-value">{user?.firstName || 'N/A'}</div>
@@ -96,7 +95,7 @@ const Profile = () => {
                 <label>Last Name</label>
                 <div className="detail-value">{user?.lastName || 'N/A'}</div>
               </div>
-              <div className="detail-group">
+              <div className="detail-group full">
                 <label>Email Address</label>
                 <div className="detail-value">{user?.email || 'N/A'}</div>
               </div>

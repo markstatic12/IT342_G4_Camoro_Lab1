@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import homeIcon from '../assets/miniapp_home.png';
 import profileIcon from '../assets/miniapp_profile.png';
+import logoutIcon from '../assets/miniapp_logout.png';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -48,7 +49,7 @@ const Dashboard = () => {
 
         <div className="sidebar-footer">
           <button type="button" className="nav-item danger" onClick={handleLogout}>
-            <span className="nav-icon">⎋</span>
+            <img className="nav-icon-img" src={logoutIcon} alt="" aria-hidden="true" />
             Logout
           </button>
         </div>

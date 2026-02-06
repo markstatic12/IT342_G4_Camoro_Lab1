@@ -24,6 +24,17 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Create token_blacklist table
+CREATE TABLE IF NOT EXISTS token_blacklist (
+    token_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(512) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
+    INDEX idx_token (token),
+    INDEX idx_expires_at (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Sample data (optional - for testing)
 -- Password: password123 (BCrypt hashed)
 -- INSERT INTO users (first_name, last_name, email, password, status) 
@@ -34,3 +45,4 @@ CREATE TABLE IF NOT EXISTS users (
 -- ============================================
 SHOW TABLES;
 DESCRIBE users;
+DESCRIBE token_blacklist;

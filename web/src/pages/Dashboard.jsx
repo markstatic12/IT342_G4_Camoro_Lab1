@@ -1,13 +1,22 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import homeIcon from '../assets/miniapp_home.png';
+import profileIcon from '../assets/miniapp_profile.png';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleLogout = () => {
-    logout();
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = async () => {
+    setShowLogoutConfirm(false);
+    await logout();
     navigate('/login');
   };
 
@@ -16,65 +25,62 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <h1>Dashboard</h1>
-          <div className="header-actions">
-            <button onClick={handleViewProfile} className="btn-secondary">
-              View Profile
-            </button>
-            <button onClick={handleLogout} className="btn-danger">
-              Logout
-            </button>
+    <div className="dashboard-shell">
+      <aside className="dashboard-sidebar">
+        <div className="sidebar-brand">
+          <div className="brand-mark">MA</div>
+          <div>
+            <p className="brand-title">Mini - App</p>
+            <p className="brand-subtitle">User Portal</p>
           </div>
         </div>
-      </header>
 
-      <main className="dashboard-main">
-        <div className="welcome-section">
-          <h2>Welcome back, {user?.firstName || 'User'}!</h2>
-          <p>You have successfully logged in to your account.</p>
+        <nav className="sidebar-nav">
+          <button type="button" className="nav-item active">
+            <img className="nav-icon-img" src={homeIcon} alt="" aria-hidden="true" />
+            Dashboard
+          </button>
+          <button type="button" className="nav-item" onClick={handleViewProfile}>
+            <img className="nav-icon-img" src={profileIcon} alt="" aria-hidden="true" />
+            View Profile
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <button type="button" className="nav-item danger" onClick={handleLogout}>
+            <span className="nav-icon">⎋</span>
+            Logout
+          </button>
         </div>
+      </aside>
 
-        <div className="dashboard-grid">
-          <div className="dashboard-card">
-            <h3>Account Information</h3>
-            <div className="info-item">
-              <span className="info-label">Name:</span>
-              <span className="info-value">
-                {user?.firstName} {user?.lastName}
-              </span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Email:</span>
-              <span className="info-value">{user?.email}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Status:</span>
-              <span className="info-value status-active">Active</span>
-            </div>
+      <main className="dashboard-content">
+        <header className="content-header">
+          <div>
+            <p className="content-eyebrow">Overview</p>
+            <h1>Dashboard</h1>
+            <p className="content-subtitle">Welcome back, {user?.firstName || 'User'}.</p>
           </div>
+        </header>
 
-          <div className="dashboard-card">
-            <h3>Quick Actions</h3>
-            <button onClick={handleViewProfile} className="action-button">
-              View Full Profile
-            </button>
-            <button className="action-button">
-              Update Settings
-            </button>
-            <button className="action-button">
-              Change Password
-            </button>
-          </div>
-
-          <div className="dashboard-card">
-            <h3>Recent Activity</h3>
-            <p className="placeholder-text">No recent activity to display.</p>
-          </div>
-        </div>
       </main>
+
+      {showLogoutConfirm && (
+        <div className="modal-overlay" role="dialog" aria-modal="true">
+          <div className="modal-card">
+            <h2>Confirm logout</h2>
+            <p>Are you sure you want to log out?</p>
+            <div className="modal-actions">
+              <button type="button" className="ghost-button" onClick={() => setShowLogoutConfirm(false)}>
+                Cancel
+              </button>
+              <button type="button" className="primary-button" onClick={confirmLogout}>
+                Log out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

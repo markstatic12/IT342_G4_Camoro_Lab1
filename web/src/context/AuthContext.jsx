@@ -1,39 +1,38 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState } from 'react';
 import { authService } from '../services/authService';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-
-  useEffect(() => {
-    // Check if user is already logged in
-    const storedToken = localStorage.getItem('token');
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [loading] = useState(false);
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
 
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      const { token, user } = response;
-      
+      const { token, user, message } = response || {};
+
+      if (!token || !user) {
+        return {
+          success: false,
+          error: message || 'Email or password is incorrect.'
+        };
+      }
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       setToken(token);
       setUser(user);
-      
+
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || 'Email or password is incorrect.' };
     }
   };
 
@@ -46,12 +45,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    authService.logout();
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      // Wait for backend logout so the token is sent before we clear storage
+      await authService.logout();
+    } catch (error) {
+      // Keep client logout even if backend call fails to avoid stuck sessions
+      console.error('Logout failed:', error);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+    }
   };
 
   const value = {

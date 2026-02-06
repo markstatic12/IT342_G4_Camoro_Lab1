@@ -1,12 +1,22 @@
 package com.example.mini_app.service;
 
-import com.example.mini_app.dto.*;
-import com.example.mini_app.entity.User;
-import com.example.mini_app.repository.UserRepository;
-import com.example.mini_app.security.JwtTokenProvider;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.mini_app.dto.AuthResponse;
+import com.example.mini_app.dto.LoginRequest;
+import com.example.mini_app.dto.MessageResponse;
+import com.example.mini_app.dto.RegisterRequest;
+import com.example.mini_app.dto.UserDTO;
+import com.example.mini_app.dto.UserResponse;
+import com.example.mini_app.entity.TokenBlacklist;
+import com.example.mini_app.entity.User;
+import com.example.mini_app.repository.TokenBlacklistRepository;
+import com.example.mini_app.repository.UserRepository;
+import com.example.mini_app.security.JwtTokenProvider;
 
 @Service
 public class AuthService {
@@ -19,6 +29,9 @@ public class AuthService {
     
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private TokenBlacklistRepository tokenBlacklistRepository;
     
     public MessageResponse register(RegisterRequest request) {
         // Check if email already exists
@@ -42,11 +55,11 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         // Find user by email
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new RuntimeException("Email not found"));
         
         // Validate password
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new RuntimeException("Incorrect password");
         }
         
         // Generate JWT token
@@ -81,5 +94,26 @@ public class AuthService {
         );
         
         return new UserResponse(userDTO);
+    }
+
+    public MessageResponse logout(String token) {
+        if (token == null || token.isBlank()) {
+            throw new RuntimeException("Missing token");
+        }
+
+        if (!tokenProvider.validateToken(token)) {
+            throw new RuntimeException("Invalid token");
+        }
+
+        if (tokenBlacklistRepository.existsByToken(token)) {
+            return new MessageResponse("Token already invalidated");
+        }
+
+        LocalDateTime expiresAt = tokenProvider.getExpiryFromToken(token);
+        TokenBlacklist blacklistEntry = new TokenBlacklist(token, expiresAt);
+        // Persist immediately so blacklist is visible without waiting for flush/transaction boundaries
+        tokenBlacklistRepository.saveAndFlush(blacklistEntry);
+
+        return new MessageResponse("Logged out successfully");
     }
 }

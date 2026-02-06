@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Auth.css';
@@ -132,7 +132,7 @@ const RegisterForm = ({ data, onChange, onSubmit, loading, error }) => (
 	</>
 );
 
-const Auth = ({ initialMode = 'login' }) => {
+const Auth = () => {
 	const { login, register } = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -152,7 +152,6 @@ const Auth = ({ initialMode = 'login' }) => {
 		},
 	];
 
-	const [mode, setMode] = useState(initialMode);
 	const [activeSlide, setActiveSlide] = useState(0);
 	const [loginData, setLoginData] = useState({ email: '', password: '' });
 	const [registerData, setRegisterData] = useState({
@@ -166,15 +165,6 @@ const Auth = ({ initialMode = 'login' }) => {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		if (location.pathname.includes('register')) {
-			setMode('register');
-		} else {
-			setMode('login');
-		}
-		setError('');
-	}, [location.pathname]);
-
-	useEffect(() => {
 		const intervalId = setInterval(() => {
 			setActiveSlide((prev) => (prev + 1) % slides.length);
 		}, 5000);
@@ -182,7 +172,6 @@ const Auth = ({ initialMode = 'login' }) => {
 	}, [slides.length]);
 
 	const handleModeChange = (target) => {
-		setMode(target);
 		setError('');
 		navigate(target === 'login' ? '/login' : '/register');
 	};
@@ -198,12 +187,16 @@ const Auth = ({ initialMode = 'login' }) => {
 	};
 
 	const validateLogin = () => {
-		if (!loginData.email || !loginData.password) {
-			setError('Please fill in all fields');
+		if (!loginData.email) {
+			setError('Email is required.');
 			return false;
 		}
 		if (!/\S+@\S+\.\S+/.test(loginData.email)) {
-			setError('Please enter a valid email address');
+			setError('Please enter a valid email address.');
+			return false;
+		}
+		if (!loginData.password) {
+			setError('Password is required.');
 			return false;
 		}
 		return true;
@@ -211,20 +204,36 @@ const Auth = ({ initialMode = 'login' }) => {
 
 	const validateRegister = () => {
 		const { firstName, lastName, email, password, confirmPassword } = registerData;
-		if (!firstName || !lastName || !email || !password || !confirmPassword) {
-			setError('Please fill in all fields');
+		if (!firstName) {
+			setError('First name is required.');
+			return false;
+		}
+		if (!lastName) {
+			setError('Last name is required.');
+			return false;
+		}
+		if (!email) {
+			setError('Email is required.');
 			return false;
 		}
 		if (!/\S+@\S+\.\S+/.test(email)) {
-			setError('Please enter a valid email address');
+			setError('Please enter a valid email address.');
+			return false;
+		}
+		if (!password) {
+			setError('Password is required.');
 			return false;
 		}
 		if (password.length < 6) {
-			setError('Password must be at least 6 characters long');
+			setError('Password must be at least 6 characters long.');
+			return false;
+		}
+		if (!confirmPassword) {
+			setError('Confirm password is required.');
 			return false;
 		}
 		if (password !== confirmPassword) {
-			setError('Passwords do not match');
+			setError('Passwords do not match.');
 			return false;
 		}
 		return true;
@@ -239,7 +248,14 @@ const Auth = ({ initialMode = 'login' }) => {
 		if (result.success) {
 			navigate('/dashboard');
 		} else {
-			setError(result.error || 'Invalid email or password');
+			const message = (result.error || '').toLowerCase();
+			if (message.includes('email')) {
+				setError('Email not found.');
+			} else if (message.includes('password')) {
+				setError('Incorrect password.');
+			} else {
+				setError('Email or password is incorrect.');
+			}
 		}
 		setLoading(false);
 	};
@@ -257,42 +273,13 @@ const Auth = ({ initialMode = 'login' }) => {
 		});
 		if (result.success) {
 			navigate('/login');
-			setMode('login');
 		} else {
 			setError(result.error || 'Registration failed. Please try again.');
 		}
 		setLoading(false);
 	};
 
-	const isLogin = mode === 'login';
-
-	const formPanels = useMemo(
-		() => ({
-			login: (
-				<div className={`form-panel ${isLogin ? 'active' : 'exit-left'}`}>
-					<LoginForm
-						data={loginData}
-						onChange={onLoginChange}
-						onSubmit={handleLoginSubmit}
-						loading={loading}
-						error={isLogin ? error : ''}
-					/>
-				</div>
-			),
-			register: (
-				<div className={`form-panel ${!isLogin ? 'active' : 'exit-right'}`}>
-					<RegisterForm
-						data={registerData}
-						onChange={onRegisterChange}
-						onSubmit={handleRegisterSubmit}
-						loading={loading}
-						error={!isLogin ? error : ''}
-					/>
-				</div>
-			),
-		}),
-		[isLogin, loginData, registerData, loading, error]
-	);
+	const isLogin = location.pathname.includes('register') ? false : true;
 
 	return (
 		<div className="auth-shell">
@@ -350,8 +337,24 @@ const Auth = ({ initialMode = 'login' }) => {
 						</div>
 
 						<div className="form-stack" aria-live="polite">
-							{formPanels.login}
-							{formPanels.register}
+							<div className={`form-panel ${isLogin ? 'active' : 'exit-left'}`}>
+								<LoginForm
+									data={loginData}
+									onChange={onLoginChange}
+									onSubmit={handleLoginSubmit}
+									loading={loading}
+									error={isLogin ? error : ''}
+								/>
+							</div>
+							<div className={`form-panel ${!isLogin ? 'active' : 'exit-right'}`}>
+								<RegisterForm
+									data={registerData}
+									onChange={onRegisterChange}
+									onSubmit={handleRegisterSubmit}
+									loading={loading}
+									error={!isLogin ? error : ''}
+								/>
+							</div>
 						</div>
 					</div>
 				</section>

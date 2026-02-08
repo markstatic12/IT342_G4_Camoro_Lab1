@@ -1,8 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import homeIcon from '../assets/miniapp_home.png';
-import profileIcon from '../assets/miniapp_profile.png';
+import Sidebar from '../components/Sidebar';
 import '../styles/Profile.css';
 
 const Profile = () => {
@@ -10,13 +9,9 @@ const Profile = () => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-  const handleBackToDashboard = () => {
-    navigate('/dashboard');
-  };
-
-  const handleLogout = () => {
-    setShowLogoutConfirm(true);
-  };
+  const handleNavigateDashboard = () => navigate('/dashboard');
+  const handleNavigateProfile = () => navigate('/profile');
+  const handleLogout = () => setShowLogoutConfirm(true);
 
   const confirmLogout = async () => {
     setShowLogoutConfirm(false);
@@ -26,33 +21,12 @@ const Profile = () => {
 
   return (
     <div className="profile-shell">
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-brand">
-          <div className="brand-mark">MA</div>
-          <div>
-            <p className="brand-title">Mini - App</p>
-            <p className="brand-subtitle">User Portal</p>
-          </div>
-        </div>
-
-        <nav className="sidebar-nav">
-          <button type="button" className="nav-item" onClick={handleBackToDashboard}>
-            <img className="nav-icon-img" src={homeIcon} alt="" aria-hidden="true" />
-            Dashboard
-          </button>
-          <button type="button" className="nav-item active">
-            <img className="nav-icon-img" src={profileIcon} alt="" aria-hidden="true" />
-            View Profile
-          </button>
-        </nav>
-
-        <div className="sidebar-footer">
-          <button type="button" className="nav-item danger" onClick={handleLogout}>
-            <span className="nav-icon">⎋</span>
-            Logout
-          </button>
-        </div>
-      </aside>
+      <Sidebar
+        active="profile"
+        onNavigateDashboard={handleNavigateDashboard}
+        onNavigateProfile={handleNavigateProfile}
+        onLogout={handleLogout}
+      />
 
       <main className="profile-content">
         <header className="content-header">
@@ -62,7 +36,7 @@ const Profile = () => {
             <p className="content-subtitle">Manage your personal details and security.</p>
           </div>
           <div className="header-actions">
-            <button onClick={handleBackToDashboard} className="ghost-button">
+            <button onClick={handleNavigateDashboard} className="ghost-button">
               Back to Dashboard
             </button>
           </div>
@@ -72,11 +46,14 @@ const Profile = () => {
           <article className="profile-identity">
             <div className="profile-avatar">
               <div className="avatar-circle">
-                {user?.firstName?.[0]}{user?.lastName?.[0]}
+                {user?.firstName?.[0]}
+                {user?.lastName?.[0]}
               </div>
             </div>
             <div className="profile-info">
-              <h2>{user?.firstName} {user?.lastName}</h2>
+              <h2>
+                {user?.firstName} {user?.lastName}
+              </h2>
               <p className="profile-email">{user?.email}</p>
               <span className="status-pill">Active Account</span>
             </div>

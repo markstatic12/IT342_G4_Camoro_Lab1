@@ -1,15 +1,9 @@
--- ============================================
--- Database Setup for XAMPP/phpMyAdmin
--- Authentication System
--- ============================================
 
--- Create database
 CREATE DATABASE IF NOT EXISTS miniapp_db 
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
 USE miniapp_db;
--- Create users table
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(255) NOT NULL,
@@ -24,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create token_blacklist table
 CREATE TABLE IF NOT EXISTS token_blacklist (
     token_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     token VARCHAR(512) NOT NULL UNIQUE,
@@ -35,14 +28,7 @@ CREATE TABLE IF NOT EXISTS token_blacklist (
     INDEX idx_expires_at (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Sample data (optional - for testing)
--- Password: password123 (BCrypt hashed)
--- INSERT INTO users (first_name, last_name, email, password, status) 
--- VALUES ('John', 'Doe', 'john@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'active');
 
--- ============================================
--- Verify setup
--- ============================================
 SHOW TABLES;
 DESCRIBE users;
 DESCRIBE token_blacklist;

@@ -1,5 +1,6 @@
 package com.example.miniapp_mobile.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -52,8 +53,7 @@ class RegisterActivity : AppCompatActivity() {
         
         // Login link click
         binding.loginLink.setOnClickListener {
-            // TODO: Navigate to login screen
-            Toast.makeText(this, "Login screen coming soon", Toast.LENGTH_SHORT).show()
+            navigateToLogin()
         }
     }
     
@@ -124,5 +124,11 @@ class RegisterActivity : AppCompatActivity() {
         binding.emailInput.text?.clear()
         binding.passwordInput.text?.clear()
         binding.confirmPasswordInput.text?.clear()
+    }
+    
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

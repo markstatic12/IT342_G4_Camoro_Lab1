@@ -2,6 +2,7 @@ package com.example.miniapp_mobile.data.repository
 
 import com.example.miniapp_mobile.data.api.RetrofitClient
 import com.example.miniapp_mobile.data.model.AuthResponse
+import com.example.miniapp_mobile.data.model.LoginRequest
 import com.example.miniapp_mobile.data.model.MessageResponse
 import com.example.miniapp_mobile.data.model.RegisterRequest
 import kotlinx.coroutines.Dispatchers
@@ -33,13 +34,14 @@ class AuthRepository {
             Result.failure(e)
         }
     }
-    
-    suspend fun login(email: String, password: String): Result<AuthResponse> = 
+
+    // File: app/src/main/java/com/example/miniapp_mobile/data/repository/AuthRepository.kt
+    suspend fun login(email: String, password: String): Result<AuthResponse> =
         withContext(Dispatchers.IO) {
             try {
-                val credentials = mapOf("email" to email, "password" to password)
-                val response = authApiService.login(credentials)
-                
+                val request = LoginRequest(email, password)
+                val response = authApiService.login(request)
+
                 if (response.isSuccessful) {
                     response.body()?.let {
                         Result.success(it)

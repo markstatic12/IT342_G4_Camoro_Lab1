@@ -57,9 +57,7 @@ const Profile = () => {
               <p className="profile-email">{user?.email}</p>
               <span className="status-pill">Active Account</span>
             </div>
-            <div className="profile-actions">
-              <button className="primary-button">Edit Profile</button>
-            </div>
+            
           </article>
 
           <article className="profile-details-card">
@@ -80,12 +78,6 @@ const Profile = () => {
                 <label>Account Created</label>
                 <div className="detail-value">
                   {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
-                </div>
-              </div>
-              <div className="detail-group">
-                <label>Last Updated</label>
-                <div className="detail-value">
-                  {user?.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : 'N/A'}
                 </div>
               </div>
             </div>

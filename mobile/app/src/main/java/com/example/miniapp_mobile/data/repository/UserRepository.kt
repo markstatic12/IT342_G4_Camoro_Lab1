@@ -10,8 +10,10 @@ class UserRepository {
     suspend fun getProfile(token: String): Result<User> {
         return try {
             val response = api.getProfile("Bearer $token")
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
+            if (response.isSuccessful) {
+                val user = response.body()?.user
+                    ?: return Result.failure(Exception("Empty profile response"))
+                Result.success(user)
             } else {
                 Result.failure(Exception("Failed to fetch profile"))
             }

@@ -3,4 +3,25 @@
     <style name="HintStyle">
         <item name="android:textSize">9dp</item>
     </style>
+
+    <!-- Styled alert dialog matching the dark app theme -->
+    <style name="AppDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@drawable/bg_dialog</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurface">@color/card_background</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_hint</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogNegativeButton</item>
+    </style>
+
+    <style name="DialogPositiveButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/accent_blue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DialogNegativeButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/text_hint</item>
+    </style>
 </resources>

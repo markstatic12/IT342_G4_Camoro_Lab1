@@ -5,5 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Miniappmobile" parent="Base.Theme.Miniappmobile" />
+    <style name="Theme.Miniappmobile" parent="Base.Theme.Miniappmobile">
+        <!-- Bottom nav active indicator: blue pill, white icon on top -->
+        <item name="colorSecondaryContainer">@color/accent_blue</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
 </resources>

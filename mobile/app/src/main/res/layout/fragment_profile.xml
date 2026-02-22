@@ -11,15 +11,17 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="80dp"
-        android:clipToPadding="false">
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
-            android:paddingTop="52dp">
+            android:paddingTop="52dp"
+            android:paddingBottom="24dp">
 
             <!-- Logo + App Name -->
             <LinearLayout
@@ -271,8 +273,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/card_background"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 

@@ -48,11 +48,10 @@
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
 
+        <!-- Push Profile on top; Dashboard stays alive in back stack -->
         <action
             android:id="@+id/action_dashboard_to_profile"
-            app:destination="@id/profileFragment"
-            app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/profileFragment" />
 
         <action
             android:id="@+id/action_dashboard_to_login"
@@ -67,12 +66,6 @@
         android:name="com.example.miniapp_mobile.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
-
-        <action
-            android:id="@+id/action_profile_to_dashboard"
-            app:destination="@id/dashboardFragment"
-            app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_profile_to_login"

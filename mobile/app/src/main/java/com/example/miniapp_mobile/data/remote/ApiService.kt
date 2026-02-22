@@ -4,7 +4,7 @@ import com.example.miniapp_mobile.data.model.LoginRequest
 import com.example.miniapp_mobile.data.model.LoginResponse
 import com.example.miniapp_mobile.data.model.MessageResponse
 import com.example.miniapp_mobile.data.model.RegisterRequest
-import com.example.miniapp_mobile.data.model.User
+import com.example.miniapp_mobile.data.model.UserResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,7 +20,7 @@ interface ApiService {
     suspend fun register(@Body request: RegisterRequest): Response<MessageResponse>
 
     @GET("api/auth/profile")
-    suspend fun getProfile(@Header("Authorization") token: String): Response<User>
+    suspend fun getProfile(@Header("Authorization") token: String): Response<UserResponse>
 
     @POST("api/auth/logout")
     suspend fun logout(@Header("Authorization") token: String): Response<MessageResponse>

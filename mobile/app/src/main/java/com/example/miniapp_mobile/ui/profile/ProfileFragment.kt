@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -43,12 +44,18 @@ class ProfileFragment : Fragment() {
         handleBackNavigation()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNav.menu.findItem(R.id.nav_profile)?.isChecked = true
+    }
+
     private fun setupBottomNav() {
         binding.bottomNav.selectedItemId = R.id.nav_profile
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_dashboard -> {
-                    findNavController().navigate(R.id.action_profile_to_dashboard)
+                    // Dashboard is still in back stack — just pop back to it
+                    findNavController().popBackStack()
                     true
                 }
                 R.id.nav_profile -> true
@@ -114,16 +121,27 @@ class ProfileFragment : Fragment() {
 
     private fun setupLogout() {
         binding.btnLogout.setOnClickListener {
-            val token = sessionManager.getToken()
-            if (token != null) {
-                authViewModel.logout(token)
-            }
-            sessionManager.clearSession()
-            authViewModel.resetLoginState()
-            authViewModel.resetProfileState()
-            Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_profile_to_login)
+            showLogoutConfirmDialog()
         }
+    }
+
+    private fun showLogoutConfirmDialog() {
+        AlertDialog.Builder(requireContext(), R.style.AppDialogTheme)
+            .setTitle("Log Out")
+            .setMessage("Are you sure you want to log out of your account?")
+            .setPositiveButton("Log Out") { _, _ -> performLogout() }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun performLogout() {
+        val token = sessionManager.getToken()
+        if (token != null) authViewModel.logout(token)
+        sessionManager.clearSession()
+        authViewModel.resetLoginState()
+        authViewModel.resetProfileState()
+        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_profile_to_login)
     }
 
     private fun handleBackNavigation() {
@@ -131,7 +149,7 @@ class ProfileFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    findNavController().navigate(R.id.action_profile_to_dashboard)
+                    findNavController().popBackStack()
                 }
             }
         )

@@ -41,6 +41,16 @@ class DashboardFragment : Fragment() {
         blockBackNavigation()
     }
 
+    // Re-assert the correct nav selection every time this screen becomes visible.
+    // onViewCreated is not re-called on popBackStack, so selectedItemId can be
+    // left on nav_profile if the user had tapped it before navigating away.
+    override fun onResume() {
+        super.onResume()
+        // Use menu.findItem to flip the checked state directly — this does NOT
+        // trigger setOnItemSelectedListener, so no accidental navigation fires.
+        binding.bottomNav.menu.findItem(R.id.nav_dashboard)?.isChecked = true
+    }
+
     private fun setupBottomNav() {
         binding.bottomNav.selectedItemId = R.id.nav_dashboard
         binding.bottomNav.setOnItemSelectedListener { item ->
@@ -56,13 +66,13 @@ class DashboardFragment : Fragment() {
     }
 
     private fun loadProfile() {
-        // Show cached data immediately while fetching fresh data
+        // Always show cached data immediately for instant UI
         sessionManager.getUser()?.let { cached ->
             updateUI(cached.firstName, cached.lastName, cached.email)
         }
-        // Fetch fresh profile from server
-        val token = sessionManager.getToken()
-        if (token != null) {
+        // Only fetch from server if not already loaded in this session
+        val token = sessionManager.getToken() ?: return
+        if (authViewModel.profileState.value !is AuthUiState.Success) {
             authViewModel.loadProfile(token)
         }
     }
@@ -76,7 +86,7 @@ class DashboardFragment : Fragment() {
                     updateUI(user.firstName, user.lastName, user.email)
                 }
                 is AuthUiState.Error -> {
-                    // Already showing cached data — nothing more to do
+                    // Cached data is already shown, silently ignore
                 }
                 else -> { /* Loading or Idle */ }
             }

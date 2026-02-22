@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Base -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="hint_gray">#9E9E9E</color>
+
+    <!-- Backgrounds -->
+    <color name="background_dark">#0A0F1E</color>
+    <color name="card_background">#141B2E</color>
+    <color name="field_background">#0D1526</color>
+
+    <!-- Accent -->
+    <color name="accent_blue">#4A7BF7</color>
+    <color name="accent_blue_dark">#2E5DD4</color>
+
+    <!-- Text -->
+    <color name="text_hint">#7A8BAA</color>
+
+    <!-- Strokes / Dividers -->
+    <color name="field_stroke">#2A3755</color>
+    <color name="divider_color">#1E2D47</color>
+
+    <!-- Tab switcher background -->
+    <color name="tab_switcher_bg">#111827</color>
+
+    <!-- Nav icon tint (used in selector) -->
+    <color name="nav_icon_active">#4A7BF7</color>
+    <color name="nav_icon_inactive">#7A8BAA</color>
 </resources>

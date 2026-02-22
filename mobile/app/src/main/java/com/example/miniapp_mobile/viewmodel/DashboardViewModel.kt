@@ -1,4 +1,5 @@
 package com.example.miniapp_mobile.viewmodel
 
-class DashboardViewModel {
-}
+import androidx.lifecycle.ViewModel
+
+class DashboardViewModel : ViewModel()

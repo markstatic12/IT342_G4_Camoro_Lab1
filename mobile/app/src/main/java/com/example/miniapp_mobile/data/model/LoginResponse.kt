@@ -1,4 +1,6 @@
 package com.example.miniapp_mobile.data.model
 
-class LoginResponse {
-}
+data class LoginResponse(
+    val token: String,
+    val user: User
+)

@@ -1,4 +1,5 @@
 package com.example.miniapp_mobile.viewmodel
 
-class ProfileViewModel {
-}
+import androidx.lifecycle.ViewModel
+
+class ProfileViewModel : ViewModel()
